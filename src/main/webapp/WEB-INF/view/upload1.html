@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!--
+Copyright (C) 2021 theValidator <the.validator@yandex.ru>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Rally Sprint Events</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="//localhost:8080/rally-sprint-events/resources/assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="//localhost:8080/rally-sprint-events/resources/css/styles.css" rel="stylesheet" />
+
+        <link rel="stylesheet" href="//localhost:8080/rally-sprint-events/resources/css/bootstrap-datepicker3.min.css"/>
+        <link rel="canonical" href="https://getbootstrap.com/docs/5.0/forms/input-group/"/>
+
+
+    </head>
+    <body>
+        <h2 th:text="'Кругов добавлено: ' + ${result}"></h2>
+        <table>
+            <tr>
+                <td>OriginalFileName:</td>
+                <td th:text="${orig}"></td>
+            </tr>
+            <tr>
+                <td>Type:</td>
+                <td th:text="${type}"></td>
+            </tr>
+            <tr>
+                <td>Name:</td>
+                <td th:text="${name}"></td>
+            </tr>
+            <tr>
+                <td>Size:</td>
+                <td th:text="${size}"></td>
+            </tr>
+        </table>
+
+        <form action="manage">
+            <button type="submit">Назад</button>
+        </form>
+    </body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header-table-numeration">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"/>
+                <!-- Page content-->
+                <div class="container-fluid">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/results}">Результаты</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Мероприятие</li>
+                        </ol>
+                    </nav>
+
+                    <div>
+                        <br/>
+                    </div><!-- comment -->
+                    <div class="row gy-2 gx-3 ">
+                        <div class="col-auto">
+                            <form method="GET" th:action="@{/show-final-result-variance}">
+                                <input type="hidden" name="eventId" th:value="${eventId}" />
+                                <button type="submit" class="btn btn-secondary btn-lg" ><strong>СТАБИЛЬНОСТЬ</strong></button>
+                            </form>
+                        </div>
+                        <div class="col-auto">
+                            <form method="GET" th:action="@{/show-absolute-result}">
+                                <input type="hidden" name="eventId" th:value="${eventId}" />
+                                <button type="submit" class="btn btn-secondary btn-lg" ><strong>АБСОЛЮТ</strong></button>
+                            </form>
+                        </div>
+                        <div class="col-auto">
+                            <form method="GET" th:action="@{/show-config-result}">
+                                <input type="hidden" name="eventId" th:value="${eventId}" />
+                                <input type="hidden" name="configNumber" th:value="1" />
+                                <button type="submit" class="btn btn-secondary btn-lg" ><strong>КОНФИГУРАЦИИ</strong></button>
+                            </form>
+                        </div>
+                    </div>
+
+
+                    <div>
+                        <br/>
+                    </div>
+
+                    <div th:each="category: ${categories}" class="table-responsive">
+                        <table class="table table-sm table-striped table-hover tcont countLines table-responsive">
+                            <thead>
+                                <tr>
+                                    <!-- <th th:colspan="6 + ${ss}" class="table-dark align-middle" th:text="${category.getOption + '   (' + category + ')'}"></th> -->
+                                    <th colspan="5" class="table-dark align-middle" th:text="${category.name}"></th>
+                                    <th th:colspan="${ss}" class="table-dark" >
+                                        <form method="GET" th:action="@{/show-final-result-by-category}">
+                                            <input type="hidden" name="eventId" th:value="${eventId}" />
+                                            <input type="hidden" name="category" th:value="${category.name}" />
+                                            <button sec:authorize="isAuthenticated()" type="submit" class="btn btn-light btn-sm float-end" ><strong>Подробнее</strong></button>
+                                        </form>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th class="align-middle text-center" scope="col">Поз</th>
+                                    <th class="align-middle text-center" scope="col">#</th>
+                                    <th class="align-middle" scope="col">Пилот</th>
+                                    <th class="align-middle" scope="col">Автомобиль</th>
+                                    <th class="align-middle text-center" scope="col" th:each="iter: ${#numbers.sequence(1,ss)}"><div th:text="${'СУ-' + iter}"/></th>
+                                    <th class="align-middle text-center" scope="col">Общее время</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="result,iter: ${results}" th:object="${result}" th:if="${result.getCategory == category.name}">
+                                    <td class="align-middle text-center" scope="row"></td>
+                                    <td class="align-middle text-center" th:text="${result.startNumber}"></td>
+                                    <td sec:authorize="isAuthenticated()" class="align-middle" th:text="${result.fullName}"></td>
+                                    <td sec:authorize="!isAuthenticated()" class="align-middle"> ***** </td>
+                                    <td class="align-middle" th:text="${result.vehicleName}"></td>
+                                    <td class="align-middle text-center" scope="col" th:each="time: ${result.totalSsTimes}" ><div th:text="${time}"/></td>
+                                    <th class="align-middle text-center" th:text="${result.totalTime}"></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+
+        <script>
+            $('.table tbody tr').each(function (i) {
+                var number = i + 1;
+                $(this).find('td:first').text(number + ".");
+            });
+        </script>
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+    </body>
+</html>

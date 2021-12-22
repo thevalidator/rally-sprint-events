@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title th:text="${result}"></title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="//localhost:8080/rally-sprint-events/resources/assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="//localhost:8080/rally-sprint-events/resources/css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"> </div>
+            <!-- Page content wrapper-->
+            <div  id="page-content-wrapper">
+
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"></nav>
+                <!-- Page content-->
+                <div class="container-fluid">
+
+                    <div th:if="${stages.size == 0}" class="header-h1">
+                        <br/>
+                        <h1 >НЕТ ДАННЫХ ДЛЯ ОТЧЕТОВ</h1>
+                    </div>
+
+                    <table th:if="${stages.size != 0}" class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Сессия</th>
+                                <th class="text-center" scope="col">Покруговка по пилотам</th>
+                                <th class="text-center" scope="col">Лучшие времена абсолют</th>
+                                <th class="text-center" scope="col">Лучшие времена по классам</th>
+                                <th class="text-center" scope="col">Финал(все СУ)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="col-12" th:each="stage, iter: ${stages}">
+                                <th th:text="${iter.index + 1}"></th>
+                                <td th:text="${stage.stageName}"></td>
+                                <td class="text-center">
+                                    <form method="POST" th:action="@{/generateStagePil}">
+                                        <input type="hidden" name="stageId" id="stageId" th:value="*{stage.id}" />
+                                        <button class="btn btn-outline-dark btn-sm" type="submit">Отчет</button>
+                                    </form> 
+                                </td>
+                                <td class="text-center">
+                                    <form method="POST" th:action="@{/generateStageAbs}">
+                                        <input type="hidden" name="stageId" id="stageId" th:value="*{stage.id}" />
+                                        <button class="btn btn-outline-dark btn-sm" type="submit">Отчет</button>
+                                    </form> 
+                                </td>
+                                <td class="text-center">
+                                    <form method="POST" th:action="@{/generateStageCatRes}">
+                                        <input type="hidden" name="stageId" id="stageId" th:value="*{stage.id}" />
+                                        <button class="btn btn-outline-dark btn-sm" type="submit">Отчет</button>
+                                    </form> 
+                                </td>
+                                <td class="text-center">
+                                    <form method="POST" th:action="@{/generateFinalRes}">
+                                        <input type="hidden" name="stageId" id="stageId" th:value="*{stage.id}" />
+                                        <button class="btn btn-outline-dark btn-sm" type="submit">Отчет</button>
+                                    </form> 
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+
+                    </table>
+
+                    <!--
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="container wrapper">
+                                        <form th:action="@{/generateCustomAbsRes}" method="post" >
+                                            <div>
+                                                <label>Выбрать стадии:</label>
+                                                <ul class="checkbox-list">
+                                                    <li th:each="stage, iter : ${stages}">
+                                                        <input type="checkbox" th:value="${stage.id}" />
+                                                        <span class="primary" th:text="*{iter.index + 1}"></span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="actions">
+                                                <button type="submit" class="btn btn-outline-dark btn-sm" >Абсолют</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="container wrapper">
+                                        <form th:action="@{/generateCustomCatRes}" method="post">
+                                            <div>
+                                                <label>Выбрать стадии:</label>
+                                                <ul class="checkbox-list">
+                                                    <li th:each="stage, iter : ${stages}">
+                                                        <input type="checkbox"  th:value="${stage.id}"/>
+                                                        <span class="primary" th:text="*{iter.index + 1}"></span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="actions">
+                                                <button type="submit" class="btn btn-outline-dark btn-sm" >Классовый</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    -->
+
+                   
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Bootstrap core JS
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+        -->
+        <script src="//localhost:8080/rally-sprint-events/resources/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="//localhost:8080/rally-sprint-events/resources/js/scripts.js"></script>
+    </body>
+</html>
+

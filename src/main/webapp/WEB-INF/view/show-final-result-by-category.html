@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header-table-numeration">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"/>
+                <!-- Page content-->
+                <div class="container-fluid">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/results}">Результаты</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/show-event-results(eventId=${eventId})}">Мероприятие</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Классовый зачет</li>
+                        </ol>
+                    </nav>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-sm table-striped table-hover tcont countLines table-responsive">
+                            <thead>
+                                <tr>
+                                    <!-- <th th:colspan="6 + ${ss}" class="table-dark align-middle" th:text="${category.getOption + '   (' + category + ')'}"></th> -->
+                                    <th th:colspan="3 + ${ss}" class="table-dark align-middle" th:text="${category}"></th>
+                                </tr>
+                                <tr>
+                                    <th class="align-middle text-center" scope="col">Поз</th>
+                                    <th class="align-middle text-center" scope="col">#</th>
+                                    
+                                    <th class="align-middle text-center" scope="col" th:each="iter: ${#numbers.sequence(1,ss)}"><div th:text="${'СУ-' + iter}"/></th>
+                                    <th class="align-middle text-center" scope="col">Общее время</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="result: ${results}">
+                                    <td class="align-middle text-center" scope="row"></td>
+                                    <td class="align-middle text-center" th:text="${result.startNumber}"></td>
+                                    
+  
+                                    <td class="align-middle text-center" scope="col" th:each="time, iter: ${result.ssTimes}" >
+                                        <div class="fw-weight-bolder" th:text="${result.ssTimes[iter.index]}"/>
+                                        <div th:if="${result.PenaltyTimes[iter.index] != '---' and result.PenaltyTimes[iter.index] != '00:00.000'}" class="fst-italic fw-weight-lighter">
+                                            
+                                            <div class="fw-weight-bolder" th:text="${'(+' + result.PenaltyTimes[iter.index] + ')'}"/>
+                                            <div class="fw-weight-bolder" th:text="${result.penaltyDescriptions[iter.index]}"/>
+                                        </div>
+                                        
+                                    </td>
+                                    <th class="align-middle text-center" th:text="${result.totalTime}"></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+
+        <script>
+            $('.table tbody tr').each(function (i) {
+                var number = i + 1;
+                $(this).find('td:first').text(number + ".");
+            });
+        </script>
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+    </body>
+</html>

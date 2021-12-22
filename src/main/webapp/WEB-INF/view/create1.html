@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Rally Sprint Events</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="//localhost:8080/rally-sprint-events/resources/assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="//localhost:8080/rally-sprint-events/resources/css/styles.css" rel="stylesheet" />
+        <link rel="stylesheet" href="/resources/css/bootstrap-datepicker3.min.css"/>
+        
+        <link rel="canonical" href="https://getbootstrap.com/docs/5.0/forms/input-group/"/>
+
+    </head>
+    <body>
+        <div class="d-flex" id="wrapper">
+
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"> </div>
+            <!-- Page content wrapper-->
+            <div  id="page-content-wrapper">
+
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"></nav>
+                <!-- Page content-->
+                <div class="container-fluid">
+                    
+                    <div class="row">
+                        <!-- left part -->
+                        <div class="col-4">
+                          <div class="list-group" id="list-tab" role="tablist">
+                            <a class="list-group-item list-group-item-action active" id="list-home-list" data-bs-toggle="list" href="#list-events" role="tab" aria-controls="list-home">Event</a>
+                            <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list" href="#list-crews" role="tab" aria-controls="list-profile">Crew</a>
+                            <a class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list" href="#list-pilots" role="tab" aria-controls="list-messages">Pilot</a>
+                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-vehicles" role="tab" aria-controls="list-settings">Vehicle</a>
+                          </div>
+                        </div>
+                        <!-- right part -->
+                        <div class="col-8">
+                          <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="list-events" role="tabpanel" aria-labelledby="list-events-list">
+                                <form method="POST" th:action="@{/event/new}">
+                                    <div class="row">
+                                        <div class="col-12" id="sandbox-container">
+                                            <div class="input-daterange input-group pt-5" id="datepicker">
+                                                <span class="input-group-text" id="addon-wrapping">Date</span>
+                                                <input name="date" type="text" class="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12" id="sandbox-container">
+                                            <div class="input-group">
+                                                <span class="input-group-text">Event name</span>
+                                                <input name="name" type="text" aria-label="First name" class="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Post Content Column -->
+                                    <div class="col-lg-12">
+
+                                            <div class="form-group"></div>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane fade" id="list-crews" role="tabpanel" aria-labelledby="list-crews-list">
+                                <form method="POST" th:action="@{/event/new}">
+                                    <div class="row">
+                                        <div class="col-12" id="sandbox-container">
+                                            <div class="input-daterange input-group pt-5" id="datepicker">
+                                                <span class="input-group-text" id="addon-wrapping">Event</span>
+                                                <input name="date" type="text" class="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12" id="sandbox-container">
+                                            <div class="input-group">
+                                                <span class="input-group-text">Event name</span>
+                                                <input name="name" type="text" aria-label="First name" class="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Post Content Column -->
+                                    <div class="col-lg-12">
+
+                                            <div class="form-group"></div>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane fade" id="list-pilots" role="tabpanel" aria-labelledby="list-pilots-list">Pilot</div>
+                            <div class="tab-pane fade" id="list-vehicles" role="tabpanel" aria-labelledby="list-vehicles-list">Vehicle</div>
+                          </div>
+                        </div>
+                    </div>
+
+
+                    
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="py-5 bg-dark">
+            <div class="container">
+                <p class="m-0 text-center text-white">Copyright &copy; Your Website 2020</p>
+            </div>
+            <!-- /.container -->
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="//localhost:8080/rally-sprint-events/resources/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="//localhost:8080/rally-sprint-events/resources/js/scripts.js"></script>
+
+        <script src="//localhost:8080/rally-sprint-events/resources/js/jquery.min.js"></script>
+        <script src="//localhost:8080/rally-sprint-events/resources/js/bootstrap-datepicker.min.js"></script>
+        <script src="//localhost:8080/rally-sprint-events/resources/js/bootstrap-datepicker.ru.min.js"></script>
+        <script>
+            $('#sandbox-container .input-daterange').datepicker({
+                format: "dd.mm.yyyy",
+                language: "ru",
+                autoclose: true,
+                todayHighlight: true,
+                todayBtn: "linked"
+            });
+        </script>
+
+
+    </body>
+</html>
+

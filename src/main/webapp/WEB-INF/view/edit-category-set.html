@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"/>
+                <!-- Page content-->
+                <div class="container-fluid">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/set-of-categories}">Набор категорий</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Просмотр</li>
+                        </ol>
+                    </nav>
+
+
+                    <div th:if="${!catSet.isActive}" class="row gy-2 gx-3 ">
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#addCategoryModal">Добавить категорию</button>
+                            <!-- ADD CATEGORY Modal -->
+                            <div class="modal fade" id="addCategoryModal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Добавление категории</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form method="POST" th:action="@{/add-category-to-set}">
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-12" id="sandbox-container">
+                                                        <div class="input-group">
+                                                            <input type="hidden" name="catSetId" th:value="${catSet.id}" />
+                                                            <!-- <span class="input-group-text col-4">Стартовый номер</span> -->
+                                                            <select name="categoryId" class="form-select text-center">
+                                                                <option selected="" value="" class="text-center">Выберите категорию</option>
+                                                                <option th:each="i: ${categories}" th:value="${i.id}" th:text="${i.name}"  class="text-center"></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-outline-success btn-sm" data-dismiss="modal">Добавить</button>
+                                                <button type="button" class="btn btn-outline-dark btn-sm" data-bs-dismiss="modal">Отмена</button>
+                                            </div>
+                                        </form> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal">Удалить категорию</button>
+                            <!-- ADD CATEGORY Modal -->
+                            <div class="modal fade" id="deleteCategoryModal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Удаление категории</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form method="POST" th:action="@{/delete-category-from-set}">
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-12" id="sandbox-container">
+                                                        <div class="input-group">
+                                                            <input type="hidden" name="catSetId" th:value="${catSet.id}" />
+                                                            <!-- <span class="input-group-text col-4">Стартовый номер</span> -->
+                                                            <select name="categoryId" class="form-select text-center">
+                                                                <option selected="" value="" class="text-center">Выберите категорию</option>
+                                                                <option th:each="j: ${catSet.categories}" th:value="${j.id}" th:text="${j.name}"  class="text-center"></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-outline-success btn-sm" data-dismiss="modal">Удалить</button>
+                                                <button type="button" class="btn btn-outline-dark btn-sm" data-bs-dismiss="modal">Отмена</button>
+                                            </div>
+                                        </form> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#confirmCategoryModal">Активировать</button>
+                            <!-- ADD CATEGORY Modal -->
+                            <div class="modal fade" id="confirmCategoryModal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Подтведить и сохранить список</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form method="POST" th:action="@{/confirm-category-set}">
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-12" id="sandbox-container">
+                                                        <div class="input-group">
+                                                            <input type="hidden" name="catSetId" th:value="${catSet.id}" />
+                                                            <!-- <span class="input-group-text col-4">Стартовый номер</span> -->
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-outline-success btn-sm" data-dismiss="modal">Сохранить</button>
+                                                <button type="button" class="btn btn-outline-dark btn-sm" data-bs-dismiss="modal">Отмена</button>
+                                            </div>
+                                        </form> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="card text-dark bg-light mb-3" >
+                        <div class="card-header"><strong th:text="${catSet.name}"></strong></div>
+                        <div th:if="${catSet.categories.size == 0}">
+                            <p>Список пуст, необходимо добавить категории</p>
+                        </div>
+                        <div class="card-body" th:if="${catSet.categories.size != 0}">
+                            <ul>
+                                <li th:each="cat: ${catSet.categories}"><p th:text="${cat.name}"></p></li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+    </body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"/>
+                <!-- Page content-->
+                <div class="container-fluid">
+                    <p th:text="${crewId}"/>
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+    </body>
+</html>

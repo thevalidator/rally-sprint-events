@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header">
+        <title id="pageTitle">Rally Sprint Events</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"/>
+                <!-- Page content-->
+                <div class="container-fluid">
+
+                    <div th:each="category: ${categories}" class="table-responsive">
+
+                        <table class="table table-sm table-striped table-hover table-responsive">
+                            <thead>
+                                <tr>
+                                    <td colspan="6" class="table-dark" ><strong th:text="${category.name}"></strong></td>
+                                </tr>
+                                <tr>
+                                    <th class="align-middle text-center" scope="col">Место</th>
+                                    <th class="align-middle text-center" scope="col">#</th>
+                                    <th class="align-middle" scope="col">Пилот</th>
+                                    <th class="align-middle" scope="col">Автомобиль</th>
+                                    <th class="align-middle text-center" scope="col">Общее время</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="result,iter: ${results}" th:object="${result}" th:if="${result.getCategory == category.name}">
+                                    <td class="align-middle text-center" scope="row" th:text="${iter.count}"></td>
+                                    <td class="align-middle text-center" th:text="${result.startNumber}"></td>
+                                    <td sec:authorize="isAuthenticated()" class="align-middle" th:text="${result.fullName}"></td>
+                                    <td sec:authorize="!isAuthenticated()" class="align-middle"> ***** </td>
+                                    <td class="align-middle" th:text="${result.vehicleName}"></td>
+                                    <td class="align-middle text-center" th:text="${result.totalTime}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+
+        <script>
+            $('.table tbody tr').each(function (i) {
+                var number = i + 1;
+                $(this).find('td:first').text(number + ".");
+            });
+        </script>
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+    </body>
+</html>

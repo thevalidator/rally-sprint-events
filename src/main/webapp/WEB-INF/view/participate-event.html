@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"/>
+                <!-- Page content-->
+                <div class="container-fluid">
+
+                    <div>
+                        <br/>
+                    </div>
+
+                    <article class="blog-post">
+                        <h2 th:text="${event.eventName}" class="blog-post-title"></h2>
+                        <hr/>
+                        <div>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li th:text="${event.getTrack.getTrackName + ' - Экипажей зарегистрировано: ' + crewsNumber + '/' + event.maxCrew}"></li>
+                                <li th:text="${event.getFormattedEventDate}"></li>
+                                <li>Регистрация на мероприятие <strong th:text="${event.hasRegistration} ? 'открыта' : 'закрыта'"></strong></li>
+                                <li>Статус: <strong th:class="${status > 0 ? 'text-success' : 'text-danger'}" th:text="${status > 0} ? 'ЗАРЕГИСТРИРОВАН' : 'НЕ ЗАРЕГИСТРИРОВАН'"></strong></li>
+                            </ul>
+                        </div>
+                        <hr/>
+                    </article>
+
+
+                    <div>
+
+                    </div>
+
+                    <!-- Button add crew -->
+                    <div sec:authorize="isAuthenticated()">
+                        
+                    </div>
+                    <div sec:authorize="hasRole('ROLE_USER')" class="row gy-2 gx-3 ">
+                        <div th:if="${status == 0 and event.hasRegistration}" class="col-auto">
+                            <form method="POST" th:action="@{/crew-registration}" enctype="multipart/form-data">
+                                <input type="hidden" name="eventId" th:value="${event.id}" />
+                                <button class="btn btn-outline-success btn-sm" type="submit">Зарегистрироваться</button>
+                            </form>
+                        </div>
+                        <div th:if="${status != 0 and event.hasRegistration}" class="col-auto">
+                            <form method="POST" th:action="@{/crew-unreg}" enctype="multipart/form-data">
+                                <input type="hidden" name="eventId" th:value="${event.id}" />
+                                <input type="hidden" name="crewId" th:value="${status}" />
+                                <button class="btn btn-outline-danger btn-sm" type="submit">Отменить регистрацию</button>
+                            </form>
+                        </div>
+                        <div class="col-auto">
+                            <form method="POST" th:action="@{/event-crew-list}" enctype="multipart/form-data">
+                                <input type="hidden" name="eventId" th:value="${event.id}" />
+                                <button class="btn btn-outline-dark btn-sm" type="submit">Список участников</button>
+                            </form>
+                        </div>
+                        <div class="col-auto">
+                            <a class="btn btn-outline-dark btn-sm" th:href="${event.rulesLink}" role="button">Регламент</a>
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <br/>
+                    </div>
+
+                    <div th:if="${message != null}" th:utext="${message}" th:class="${message.length < 30 ? 'alert alert-success' : 'alert alert-danger'}"></div>
+
+                    <div>
+                        <br/>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+    </body>
+</html>

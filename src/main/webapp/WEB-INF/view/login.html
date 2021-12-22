@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <div class="sidebar-heading border-bottom bg-light">
+                    <!-- Top navigation-->
+                    <nav th:replace="fragments.html :: topnavigation"/>
+
+                </div>
+                <!-- Page content-->
+                <div class="container-fluid">
+
+                    <div class="card-body p-4 text-center">
+
+                        <h3 class="mb-4">Авторизация</h3>
+
+                        <div>
+                            <div th:if="${message}" class="d-flex justify-content-center">
+                                <div class="col-sm-6 p-0">
+                                    <div class="alert alert-secondary" role="alert" th:utext="${message}"/>
+                                </div>
+                            </div>
+                            <div th:if="${param.error}" class="d-flex justify-content-center">
+                                <div class="col-sm-6 p-0">
+                                    <div th:if="${#httpServletRequest.getParameter('error') == 'Bad credentials'}" class="alert alert-danger" role="alert" >Неверный пароль!</div>
+                                    <div th:if="${#httpServletRequest.getParameter('error') == 'No value present'}" class="alert alert-danger" role="alert" >Пользователя не существует!</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form method="POST" action="login">
+                            <div  class="d-flex justify-content-center">
+                                <div class="col-sm-6">
+                                    <div class="form-outline mb-3">
+                                        <input name="username" type="text" autocomplete="off" class="form-control form-control-lg" placeholder="Логин"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div  class="d-flex justify-content-center">
+                                <div class="col-sm-6">
+                                    <div class="form-outline mb-3">
+                                        <input name="password" type="password" autocomplete="off" class="form-control form-control-lg"  placeholder="Пароль"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Checkbox -->
+                            <!-- 
+                            <div class="form-check d-flex justify-content-start mb-4">
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    value=""
+                                    id="form1Example3"
+                                    />
+                                <label class="form-check-label" for="form1Example3"> Remember password </label>
+                            </div>
+                            -->
+
+                            <button class="btn btn-light btn-lg btn-block" type="submit">Войти</button>
+                        </form>
+
+                        <br class="my-4"/> 
+
+
+                        <div class="col-auto small mb-1">
+                            <button type="button" class="btn btn-link link-secondary" data-bs-toggle="modal" data-bs-target="#recoverPasswordModal">Восстановить пароль</button>
+                            <!-- RECOVER PASSWORD Modal -->
+                            <div class="modal fade" id="recoverPasswordModal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Восстановление пароля</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form method="POST" id="sbmfrm" th:action="@{/request-password-reset}">
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-12" id="sandbox-container">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text col-2">Email</span>
+                                                            <input name="email" autocomplete="off" type="text" class="form-control text-center"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <button type="submit" id="sbmbtn" class="btn btn-outline-success btn-sm" data-dismiss="modal">Ок</button>
+                                                <button type="button" class="btn btn-outline-dark btn-sm" data-bs-dismiss="modal">Отмена</button>
+                                            </div>
+                                        </form> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="small mb-1">
+                            <!--<a class="text-muted" th:href="@{/reset-password}">Забыли пароль?</a>-->
+                        </p>
+                        <p class="my-2">Нет аккаунта? <a th:href="@{/register}" class="link-info">Зарегистрироваться</a></p>
+
+                    </div>
+
+                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                        <div >
+
+                        </div>
+                    </div>
+
+                    <br/>
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+
+        <script>
+            const button = document.getElementById("sbmbtn");
+            const form = document.getElementById("sbmfrm");
+            button.addEventListener("click", function () {
+                button.setAttribute("disabled", "true");
+                form.submit();
+                // Submit form
+            });
+        </script>
+
+        <script th:replace="fragments.html :: jquery" />
+        <script th:replace="fragments.html :: datepicker" />
+        <script th:replace="fragments.html :: datepickerRU" />
+        <script th:replace="fragments.html :: datepicker-format" />
+
+    </body>
+</html>

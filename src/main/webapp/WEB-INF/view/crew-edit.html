@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:include="fragments.html :: header">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"/>
+                <!-- Page content-->
+                <div class="container-fluid">
+                    <div>
+                        <br/>
+                    </div>
+                    <!-- Modal -->
+                    <div >
+                        <div class="container-fluid">                         
+                            <div th:if="${vehicles.size != 0}" >
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Изменение данных</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="POST" th:action="@{/crew-save}">
+                                        <input name="crewId" type="hidden" th:value="${crew.id}"/>
+                                        <div class="row">
+                                            <div class="col-12" id="sandbox-container">
+                                                <div class="input-group">
+                                                    <span class="input-group-text col-4">Стартовый номер</span>
+                                                    <input name="startNumber" th:field="${crew.startNumber}" autocomplete="off" type="text" class="form-control text-center"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12" id="sandbox-container">
+                                                <div class="input-group">
+                                                    <span class="input-group-text col-4">Автомобиль</span>
+                                                    <select name="vehicleId" class="form-select" aria-label="Vehicle select">
+                                                        <option selected="" th:text="${crew.vehicle.make + ' ' + crew.vehicle.model}" class="text-center"></option>
+                                                        <option th:each="vehicle : ${vehicles}" th:value="${vehicle.id}" th:text="${vehicle.make + ' ' + vehicle.model}"  class="text-center"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12" id="sandbox-container">
+                                                <div class="input-group">
+                                                    <span class="input-group-text col-4">Класс</span>
+                                                    <select name="category" class="form-select" aria-label="Category select">
+                                                        <option selected="" th:text="${crew.category.getOption}" class="text-center"></option>
+                                                        <option th:each="category : ${categories}" th:value="${category}" th:text="${category.getOption}" class="text-center"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success btn-sm" >Сохранить</button>
+                                            <a th:href="@{/participate}" class="btn btn-outline-dark btn-sm">Отмена</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+    </body>
+</html>

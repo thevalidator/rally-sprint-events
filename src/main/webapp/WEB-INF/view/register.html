@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <div class="sidebar-heading border-bottom bg-light">
+                    <!-- Top navigation-->
+                    <nav th:replace="fragments.html :: topnavigation"/>
+                </div>
+                <!-- Page content-->
+                <div class="container-fluid">
+
+                    <br/>
+
+                    <div>
+                        <div class="text-center">
+                            <h4 class="modal-title">Регистрация нового пользователя</h4>
+                        </div>
+
+                        <br/>
+
+                        <div th:if="${userDto != null}">
+
+                            <div class="d-flex justify-content-center">
+                                <div class="col-sm-6 p-0">
+                                    <div class="alert alert-danger" role="alert" th:utext="${message}"/>
+                                </div>
+                            </div>
+
+                            <div class="modal-body">
+                                <form method="POST" th:action="@{/create-new-user}" class="needs-validation" novalidate="" >
+                                    <div class="row g-3">
+                                        <div class="col-md">
+                                            <div class="form-floating">
+                                                <input name="login" type="text" class="form-control form-control-sm" id="floatingLogin" placeholder="Логин" required="" pattern="[a-zA-Z0-9_@$()\.]{4,40}"/>
+                                                <label for="floatingLogin">Логин</label>
+                                                <div class="invalid-feedback">
+                                                    Только латинские буквы, цифры, а так же символы: (@_$). Длина логина от 4 до 40 знаков.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md">
+                                            <div class="form-floating">
+                                                <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Пароль" required="" pattern=".{8,40}"/>
+                                                <label for="floatingPassword">Пароль</label>
+                                                <div class="invalid-feedback">
+                                                    От 8 до 40 символов.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md">
+                                            <div class="form-floating">
+                                                <input name="passwordMatch" type="password" class="form-control" id="floatingPasswordMatch" placeholder="Пароль повторно" required="" pattern=".{8,40}"/>
+                                                <label for="floatingPasswordMatch">Пароль ещё раз</label>
+                                                <div class="invalid-feedback">
+                                                    От 8 до 40 символов.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <div class="row g-2">
+                                        <div class="col-md">
+                                            <div class="form-floating">
+                                                <input th:field="${userDto.email}" name="email" type="email" class="form-control" id="floatingEmail" placeholder="E-mail" required=""/>
+                                                <label for="floatingEmail">E-mail</label>
+                                                <div class="invalid-feedback">
+                                                    Неверный формат e-mail
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md">
+                                            <div class="form-floating">
+                                                <input name="email" type="email" class="form-control" id="floatingEmailMatch" placeholder="E-mail повторно" required=""/>
+                                                <label for="floatingEmail">E-mail ещё раз</label>
+                                                <div class="invalid-feedback">
+                                                    Неверный формат e-mail
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <br/>
+
+                                    <div class="row g-2">
+                                        <div class="col-md">
+                                            <div class="form-floating">
+                                                <input th:field="${userDto.lastName}" name="lastName" type="text" class="form-control" id="floatingLastName" placeholder="Фамилия" required="" pattern="^[А-Я]{1}[а-я]{0,19}"/>
+                                                <label for="floatingLastName">Фамилия</label>
+                                                <div class="invalid-feedback">
+                                                    Первая буква заглавная, далее прописные. Только кириллица. Макс 20 символов.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md">
+                                            <div class="form-floating">
+                                                <input th:field="${userDto.firstName}" name="firstName" type="text" class="form-control" id="floatingFirstName" placeholder="Имя" required="" pattern="^[А-Я]{1}[а-я]{0,19}"/>
+                                                <label for="floatingFirstName">Имя</label>
+                                                <div class="invalid-feedback">
+                                                    Первая буква заглавная, далее прописные. Только кириллица. Макс 20 символов. 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <br/>
+
+                                    <div class="row g-2">
+
+                                        <div class="col-md" id="sandbox-container">
+                                            <div class="form-floating input-daterange input-group" id="datepicker">
+                                                <input th:field="${userDto.birthDate}" name="birthDate" type="text" class="form-control text-start" id="floatingBirthDate" autocomplete="off" required="" pattern="\d{2}\.\d{2}\.\d{4}"/>
+                                                <label for="floatingBirthDate">Дата рождения</label>
+                                                <div class="invalid-feedback">
+                                                    Формат даты: дд.мм.гггг
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md">
+                                            <div class="form-floating">
+                                                <select name="gender" class="form-select" id="floatingSelectGender" aria-label="Floating label select example" required="">
+                                                    <option value="" selected="">Укажите ваш пол</option>
+                                                    <option value="M">Мужской</option>
+                                                    <option value="F">Женский</option>
+                                                </select>
+                                                <label for="floatingSelectGender">Пол</label>
+                                                <div class="invalid-feedback">
+                                                    Необходимо выбрать пол
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <br/>
+                                    <div id="globalError" style="display:none" >
+                                        <div class="d-flex justify-content-center">
+                                            <div class="col-sm-6 p-0">
+                                                <div class="alert alert-danger" role="alert" th:utext="${'ПАРОЛИ НЕ СОВПАДАЮТ'}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="globalError2" style="display:none" >
+                                        <div class="d-flex justify-content-center">
+                                            <div class="col-sm-6 p-0">
+                                                <div class="alert alert-danger" role="alert" th:utext="${'E-MAIL НЕ СОВПАДАЮТ'}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-end">
+                                        <button type="submit" class="btn btn-success">Зарегистрироваться</button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+
+                        <div th:if="${userDto == null}" class="modal-body">
+                            <form method="POST" th:action="@{/create-new-user}" class="needs-validation" novalidate="" >
+
+                                <div class="row g-3">
+                                    <div class="col-md">
+                                        <div class="form-floating">
+                                            <input name="login" type="text" class="form-control form-control-sm" id="floatingLogin" placeholder="Логин" required="" pattern="[a-zA-Z0-9_@$()\.]{4,40}"/>
+                                            <label for="floatingLogin">Логин</label>
+                                            <div class="invalid-feedback">
+                                                Только латинские буквы, цифры, а так же символы: (@_$). Длина логина от 4 до 40 знаков.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md">
+                                        <div class="form-floating">
+                                            <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Пароль" required="" pattern=".{8,40}"/>
+                                            <label for="floatingPassword">Пароль</label>
+                                            <div class="invalid-feedback">
+                                                От 8 до 40 символов.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md">
+                                        <div class="form-floating">
+                                            <input name="passwordMatch" type="password" class="form-control" id="floatingPasswordMatch" placeholder="Пароль повторно" required="" pattern=".{8,40}"/>
+                                            <label for="floatingPasswordMatch">Пароль ещё раз</label>
+                                            <div class="invalid-feedback">
+                                                От 8 до 40 символов.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <br/>
+                                <div class="row g-2">
+                                    <div class="col-md">
+                                        <div class="form-floating">
+                                            <input name="email" type="email" class="form-control" id="floatingEmail" placeholder="E-mail" required=""/>
+                                            <label for="floatingEmail">E-mail</label>
+                                            <div class="invalid-feedback">
+                                                Неверный формат e-mail
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md">
+                                        <div class="form-floating">
+                                            <input name="emailMatch" type="email" class="form-control" id="floatingEmailMatch" placeholder="E-mail повторно" required=""/>
+                                            <label for="floatingEmail">E-mail ещё раз</label>
+                                            <div class="invalid-feedback">
+                                                Неверный формат e-mail
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <br/>
+
+                                <div class="row g-2">
+                                    <div class="col-md">
+                                        <div class="form-floating">
+                                            <input name="lastName" type="text" class="form-control" id="floatingLastName" placeholder="Фамилия" required="" pattern="^[А-Я]{1}[а-я]{0,19}"/>
+                                            <label for="floatingLastName">Фамилия</label>
+                                            <div class="invalid-feedback">
+                                                Первая буква заглавная, далее прописные. Только кириллица. Макс 20 символов.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md">
+                                        <div class="form-floating">
+                                            <input name="firstName" type="text" class="form-control" id="floatingFirstName" placeholder="Имя" required="" pattern="^[А-Я]{1}[а-я]{0,19}"/>
+                                            <label for="floatingFirstName">Имя</label>
+                                            <div class="invalid-feedback">
+                                                Первая буква заглавная, далее прописные. Только кириллица. Макс 20 символов. 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <br/>
+
+                                <div class="row g-2">
+
+                                    <div class="col-md" id="sandbox-container">
+                                        <div class="form-floating input-daterange input-group" id="datepicker">
+                                            <input name="birthDate" type="text" class="form-control text-start" id="floatingBirthDate" autocomplete="off" required="" pattern="\d{2}\.\d{2}\.\d{4}"/>
+                                            <label for="floatingBirthDate">Дата рождения</label>
+                                            <div class="invalid-feedback">
+                                                Формат даты: дд.мм.гггг
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md">
+                                        <div class="form-floating">
+                                            <select name="gender" class="form-select" id="floatingSelectGender" aria-label="Floating label select example" required="">
+                                                <option value="">Укажите ваш пол</option>
+                                                <option value="M">Мужской</option>
+                                                <option value="F">Женский</option>
+                                            </select>
+                                            <label for="floatingSelectGender">Пол</label>
+                                            <div class="invalid-feedback">
+                                                Необходимо выбрать пол
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <br/>
+                                <div id="globalError" style="display:none" >
+                                    <div class="d-flex justify-content-center">
+                                        <div class="col-sm-6 p-0">
+                                            <div class="alert alert-danger" role="alert" th:utext="${'ПАРОЛИ НЕ СОВПАДАЮТ'}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="globalError2" style="display:none" >
+                                    <div class="d-flex justify-content-center">
+                                        <div class="col-sm-6 p-0">
+                                            <div class="alert alert-danger" role="alert" th:utext="${'E-MAIL НЕ СОВПАДАЮТ'}"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-success">Зарегистрироваться</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+
+
+        <script>
+            (function () {
+                'use strict'
+
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.querySelectorAll('.needs-validation')
+
+                // Loop over them and prevent submission
+                Array.prototype.slice.call(forms)
+                        .forEach(function (form) {
+                            form.addEventListener('submit', function (event) {
+                                $("#globalError").hide();
+                                $("#globalError2").hide();
+                                if (!form.checkValidity()) {
+                                    event.preventDefault()
+                                    event.stopPropagation()
+                                } else if (document.getElementById("floatingPasswordMatch").value != document.getElementById("floatingPassword").value) {
+                                    $("#globalError").show();
+                                    event.preventDefault();
+                                    event.stopPropagation();
+                                } else if (document.getElementById("floatingEmailMatch").value != document.getElementById("floatingEmail").value) {
+                                    $("#globalError2").show();
+                                    event.preventDefault();
+                                    event.stopPropagation();
+                                }
+
+
+                                form.classList.add('was-validated')
+                            }, false)
+                        })
+            })()
+        </script>
+
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+
+        <script th:replace="fragments.html :: jquery" />
+        <script th:replace="fragments.html :: datepicker" />
+        <script th:replace="fragments.html :: datepickerRU" />
+        <script th:replace="fragments.html :: datepicker-format" />
+
+    </body>
+</html>

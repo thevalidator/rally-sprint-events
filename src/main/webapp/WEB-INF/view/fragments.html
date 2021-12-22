@@ -1,0 +1,205 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<!--
+Copyright (C) 2021 theValidator <the.validator@yandex.ru>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+
+
+    <head th:fragment="header">
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <meta name="description" content=""/>
+        <meta name="author" content="theValidator"/>
+        <title th:include=":: #pageTitle"/>
+        <!-- Favicon-->
+        <link rel="icon" type="image/png" th:href="@{resources/assets/favicon.png}"/>
+        <!-- Custom styles for this template -->
+        <link th:href="@{resources/css/custom-styles.css}" rel="stylesheet"/>
+        <link th:href="@{resources/css/bootstrap-datepicker3.min.css}" rel="stylesheet"/>
+
+
+        <!--
+        <script th:inline="javascript">
+            var contextPath = [[${contextPath}]]; //1 /*[[@{/}]]*/ "/"; //2"[${contextPath}]";
+        </script>
+        -->
+
+    </head>
+
+
+
+
+    <body>
+
+        <!-- Top picture   th:fragment="toppic"  -->
+        <div th:fragment="toppic" class="row-cols-1">
+            <img th:src="@{resources/png/rse.png}" class="img-fluid.max-width: 100%; height: auto"/>
+        </div>
+
+        <!-- Sidebar   th:fragment="sidebar"  -->
+        <div th:fragment="sidebar" class="border-end bg-light" id="sidebar-wrapper">
+            <div class="sidebar-heading border-bottom bg-light text-center"><b>РАЗДЕЛЫ</b></div>
+            <div class="list-group list-group-flush">
+                <!-- Default dropend button -->
+                <div  sec:authorize="hasRole('ROLE_ADMIN')"  class="btn-group dropend">
+                    <button type="button" class="list-group-item list-group-item-action list-group-item-dark p-3 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        Управление
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="list-group-item list-group-item-action list-group-item-secondary p-2" th:href="@{/manage}">Мероприятия</a></li>
+                        <li><a class="list-group-item list-group-item-action list-group-item-secondary p-2" th:href="@{/tracks}">Треки</a></li>
+                        <li><a class="list-group-item list-group-item-action list-group-item-secondary p-2" th:href="@{/penalties}">Штрафы</a></li>
+                        <li><a class="list-group-item list-group-item-action list-group-item-secondary p-2" th:href="@{/set-of-categories}">Набор категорий</a></li>
+                        <li><a class="list-group-item list-group-item-action list-group-item-secondary p-2" th:href="@{/categories}">Категории</a></li>
+                    </ul>
+                </div>
+                
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/}">Главная</a>
+                
+                <!--
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/fast-user-pilot-add}">Загрузить юзеров</a>
+                -->
+                <!--
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/services}">Услуги</a>
+                -->
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/participate}">Участвовать</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/results}">Результаты</a>
+                <!--<a class="list-group-item list-group-item-action list-group-item-light p-3" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/allevents}">Анонсы</a>-->
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/contacts}">Контакты</a>
+            </div>
+        </div>
+
+        <!-- Top navigation  th:fragment="topnavigation"  -->
+        <nav th:fragment="topnavigation" class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+            <div class="container-fluid">
+                <button class="btn btn-dark" id="sidebarToggle">Меню</button>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mt-2 mt-lg-0">    
+                        <!--<li class="nav-item active"><a class="nav-link" th:href="@{/sendmail}">mailsender</a></li>-->
+                        <li sec:authorize="!isAuthenticated()" class="nav-item active"><a class="nav-link" th:href="@{/register}">Регистрация</a></li>
+                        <li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/login}">Вход</a></li>
+                        <!-- <li sec:authorize="isAuthenticated()" th:if="${username != null}" th:text="${'Вы вошли как ' + username}" class="nav-link"></li> -->
+                        <li sec:authorize="hasRole('ROLE_USER')"><img class="rounded mx-auto" th:src="@{resources/png/pilot.png}" width="40px" height="auto" alt="avatar"/></li>
+                        <li sec:authorize="hasRole('ROLE_ADMIN')"><img class="rounded mx-auto" th:src="@{resources/png/admin.png}" width="40px" height="auto" alt="avatar"/></li>
+                        <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle  text-black" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Настройки</a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a sec:authorize="hasRole('ROLE_USER')" class="dropdown-item" th:href="@{/account}">Аккаунт</a>
+                                <a sec:authorize="hasRole('ROLE_USER')" class="dropdown-item" th:href="@{/vehicles}">Гараж</a>
+                                <!-- <a class="dropdown-item" th:href="@{/password}">Сменить пароль</a>-->
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" th:href="@{/logout}">Выйти</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+        <!-- Top navigationLogin  th:fragment="topnavigationLogin"  -->
+        <nav th:fragment="topnavigationLogin" class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+            <div class="container-fluid">
+                <!--<button class="btn btn-dark" id="sidebarToggle">Меню</button>-->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- copyright -->
+        <div th:fragment="copyright">
+            <hr/>
+            <div class="text-end">
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li><p><small>Все права защищены © 2021 <a href="https://www.thekrechetofficial.ru" title="The Krechet Official">the.krechet.software</a></small></p></li>
+                    <li><figcaption class="blockquote-footer">Icons made by Freepik from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>.</figcaption></li>
+                </ul>
+            </div>
+        </div>
+        <!-- copyright -->
+        <div th:fragment="copyright222">
+            <hr/>
+            <div class="text-end">
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>Все права защищены © 2021 <a href="https://www.thekrechetofficial.ru" title="The Krechet Official">the.krechet.software</a></li>
+                    <li>Icons made by Freepik from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>.</li>
+                </ul>
+            </div>
+        </div>
+
+
+        <!-- Bootstrap core JS -->
+        <script th:fragment="BCJS" th:src="@{resources/js/bootstrap.bundle.min.js}"></script>
+        <!-- Core theme JS-->
+        <script th:fragment="TJS" th:src="@{resources/js/scripts.js}"></script>
+
+        <script th:fragment="jquery" th:src="@{resources/js/jquery.min.js}"></script>
+        <script th:fragment="datepicker" th:src="@{resources/js/bootstrap-datepicker.min.js}"></script>
+        <script th:fragment="datepickerRU" th:src="@{resources/js/bootstrap-datepicker.ru.min.js}"></script>
+        <script src="//localhost:8080/rally-sprint-events/resources/js/validate-forms.js"></script>
+
+        <script th:fragment="datepicker-format">
+            $('#sandbox-container .input-daterange').datepicker({
+                format: "dd.mm.yyyy",
+                language: "ru",
+                autoclose: true,
+                todayHighlight: true,
+                todayBtn: "linked"
+            });
+        </script>
+
+        <div th:fragment="header-table-numeration">
+            <meta charset="utf-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+            <meta name="description" content=""/>
+            <meta name="author" content="theValidator"/>
+            <title th:include=":: #pageTitle"/>
+            <!-- Favicon-->
+            <link rel="icon" type="image/png" th:href="@{resources/assets/favicon.png}"/>
+            <!-- Custom styles for this template -->
+            <link th:href="@{resources/css/custom-styles.css}" rel="stylesheet"/>
+            <link th:href="@{resources/css/bootstrap-datepicker3.min.css}" rel="stylesheet"/>
+            <style >
+                .countLines {
+                    counter-reset: trCount; 
+                    overflow: auto;         
+                    white-space: nowrap;    
+                }                           
+                .countLines tr td:first-child:before {
+                    position:relative;                
+                    counter-increment: trCount;       
+                    content:counter(trCount);         
+                    color:#1d1f21;                    
+
+                }                              
+                .w3 {width:3%};  
+
+            </style>
+
+        </div>
+
+
+    </body>
+</html>

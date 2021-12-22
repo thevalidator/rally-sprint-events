@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"/>
+                <!-- Page content-->
+                <div class="container-fluid">
+
+                    <div>
+                        <br/>
+                    </div>
+                    
+                    <div th:if="${message != null}">
+                        <div class="alert alert-success" role="alert" th:utext="${message}"/>
+                    </div>
+
+                    <!-- Button add event -->
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/event-new}" class="btn btn-outline-dark btn-sm">Создать мероприятие</a>
+
+                    <div>
+                        <br/>
+                    </div>
+
+                    <article class="blog-post">
+                        <h2 class="blog-post-title">Доступные мероприятия</h2>
+                        <hr/>
+                    </article>
+
+                    <div>
+                        <br/>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="align-middle" scope="col">Название</th>
+                                    <th class="text-center align-middle" scope="col">Трек</th>
+                                    <th class="text-center align-middle" scope="col">Макс. участников</th>
+                                    <th class="text-center align-middle" scope="col">Дата</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody th:if="${events.size == 0}">
+                                <tr>
+                                    <td  colspan="6" class="text-center">В данный момент нет мероприятий для управления</td>
+                                </tr>
+                            </tbody>
+                            <tbody th:if="${events.size != 0}">
+                                <tr th:each="event: ${events}">
+                                    <td class="align-middle" th:text="${event.eventName}"></td>
+                                    <td class="text-center align-middle" th:text="${event.track.trackName}"></td>
+                                    <td class="text-center align-middle" th:text="${event.maxCrew}"></td>
+                                    <td class="text-center align-middle" th:text="${event.getFormattedEventDate}"></td>
+                                    <td class="text-center align-middle" >
+                                        <form method="POST" th:action="@{/deactivate-event}">
+                                            <input type="hidden" name="eventId" th:value="${event.id}" />
+                                            <button type="submit" class="btn btn-outline-primary btn-sm">Завершить</button>
+                                        </form> 
+                                    </td>
+
+                                    <td class="text-center align-middle" >
+                                        <form method="GET" th:action="@{/manage-event}">
+                                            <input type="hidden" name="eventId" th:value="${event.id}" />
+                                            <button type="submit" class="btn btn-outline-dark btn-sm">Открыть</button>
+                                        </form> 
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div>
+                        <br/>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+    </body>
+</html>

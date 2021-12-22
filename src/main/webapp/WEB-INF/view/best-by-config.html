@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"/>
+                <!-- Page content-->
+                <div class="container-fluid">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/results}">Результаты</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/show-event-results(eventId=${eventId})}">Мероприятие</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Конфигурации</li>
+                        </ol>
+                    </nav>
+                    <div><br/></div>
+
+                    <div class="btn-group" role="group" aria-label="Basic outlined example">
+                        <form th:each="i: ${#numbers.sequence(1,configAmount)}" method="GET" th:action="@{/show-config-result}">
+                            <input type="hidden" name="eventId" th:value="${eventId}" />
+                            <input type="hidden" name="configNumber" th:value="${i}" />
+                            <button type="submit" class="btn btn-outline-dark" th:text="${'Конфиг ' + i}"></button>
+                        </form>
+
+                    </div>
+
+                    <article class="blog-post">
+
+                        <hr/>
+                        <div>
+                            <h2 th:text="${'Конфигурация ' + configNumber + ' (лучшее время)'}" class="blog-post-title"></h2>
+                        </div>
+                        <br/>
+                    </article>
+
+
+
+
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="align-middle text-center">Поз.</th>
+                                    <th scope="col" class="align-middle text-center">Стартовый номер</th>
+                                    <th scope="col" class="align-middle">Пилот</th>
+                                    <th scope="col" class="align-middle">Автомобиль</th>
+                                    <th scope="col" class="align-middle text-center">Мощность</th>
+                                    <th scope="col" class="align-middle text-center">Время</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="r, iter: ${results}">
+                                    <td class="align-middle text-center" th:text="${iter.count}" scope="row"></td>
+                                    <td class="align-middle text-center" th:text="${r.startNumber}" scope="row"></td>
+                                    <td sec:authorize="isAuthenticated()"class="align-middle" th:text="${r.fullName}" scope="row"></td>
+                                    <td sec:authorize="!isAuthenticated()" class="align-middle"> ***** </td>
+                                    <td class="align-middle" th:text="${r.vehicle}"></td>
+                                    <td class="align-middle text-center" th:text="${r.hp}"></td>
+                                    <td class="align-middle text-center" th:text="${r.finalTime}"></td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+    </body>
+</html>

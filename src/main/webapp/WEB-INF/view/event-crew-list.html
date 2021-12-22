@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"/>
+                <!-- Page content-->
+                <div class="container-fluid">
+
+                    <div>
+                        <br/>
+                    </div>
+
+
+                    <div th:each="category: ${categories}" class="table-responsive">
+
+
+
+                        <table class="table table-sm table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <td colspan="8" class="table-dark" ><strong th:text="${category.name}"></strong></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-center align-middle" scope="col">#</th>
+                                    <th class="align-middle" scope="col">Пилот</th>
+                                    <th class="text-center align-middle" scope="col">Возраст</th>
+                                    <th class="text-center align-middle" scope="col">Пол</th>
+                                    <th class="text-center align-middle" scope="col">Автомобиль</th>
+                                    <th class="text-center align-middle" scope="col">Мощность</th>
+                                    <th class="text-center align-middle" scope="col">Год выпуска</th>
+                                    <th class="text-center align-middle" scope="col">Оплата</th>
+
+                                </tr>
+                            </thead>
+                            <tbody th:if="${crews.size != 0}">
+                                <tr th:each="crew: ${crews}" th:object="${crew}" th:if="${crew.getCategory == category}" th:class="${pilotId == crew.pilot.getId ? 'table-primary' : ''}">
+                                    <th class="text-center align-middle" th:text="*{startNumber}" scope="row" ></th>
+                                    <td sec:authorize="isAuthenticated()" class="align-middle" th:text="*{pilot.lastName} + ' ' + *{pilot.firstName}"></td>
+                                    <td sec:authorize="!isAuthenticated()" class="text-center align-middle">***</td>
+                                    <td sec:authorize="isAuthenticated()" class="text-center align-middle" th:text="*{pilot.getAge}"></td>
+                                    <td sec:authorize="!isAuthenticated()" class="text-center align-middle">**</td>
+                                    <td sec:authorize="isAuthenticated()" class="text-center align-middle" th:text="*{pilot.gender.getOption}"></td>
+                                    <td sec:authorize="!isAuthenticated()" class="text-center align-middle">*</td>
+                                    <td class="text-center align-middle" th:text="*{vehicle.getMake} + ' ' + *{vehicle.getModel}"></td>
+                                    <td class="text-center align-middle" th:text="*{vehicle.getHp}"></td>
+                                    <td class="text-center align-middle" th:text="*{vehicle.getYear}"></td>
+                                    <td class="text-center align-middle">
+                                        <div th:if="*{isPaid==false}" class="d-flex aligns-items-center justify-content-center">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" disabled>
+                                        </div>
+                                        <div th:if="*{isPaid==true}" class="d-flex aligns-items-center justify-content-center">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckCheckedDisabled" checked disabled>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <hr/>
+                        <div>
+                            <br/>
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <br/>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+    </body>
+</html>

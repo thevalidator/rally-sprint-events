@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Rally Sprint Events</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="//localhost:8080/rally-sprint-events/resources/assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="//localhost:8080/rally-sprint-events/resources/css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="d-flex" id="wrapper">
+
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"> </div>
+            <!-- Page content wrapper-->
+            <div  id="page-content-wrapper">
+
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"></nav>
+                <!-- Page content-->
+                <div class="container-fluid">
+
+                    <br/>
+                    <h3 class="text-center">Редактирование данных экипажа</h3>
+
+                    <div class="modal-body">
+                        <form method="POST" th:action="@{/manage/editCrew}">
+                            <input name="crewId" type="hidden" th:value="*{crew.id}"></input>
+                            <div class="row">
+                                <div class="col-12" id="sandbox-container">
+                                    <div class="input-group">
+                                        <span class="input-group-text col-4">Стартовый номер</span>
+                                        <input name="startNumber" autocomplete="off" type="text" aria-label="crewNum" th:value="*{crew.startNumber}" class="form-control text-center"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" id="sandbox-container">
+                                    <div class="input-group">
+                                        <span class="input-group-text col-4">Имя</span>
+                                        <input name="firstName" autocomplete="off" type="text" aria-label="firstName" th:value="*{crew.pilot.firstName}" class="form-control text-center"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" id="sandbox-container">
+                                    <div class="input-group">
+                                        <span class="input-group-text col-4">Фамилия</span>
+                                        <input name="lastName" autocomplete="off" type="text" aria-label="lastName" th:value="*{crew.pilot.lastName}" class="form-control text-center"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" id="sandbox-container">
+                                    <div class="input-group">
+                                        <span class="input-group-text col-4">Пол</span>
+                                        <!-- <input name="gender" autocomplete="off" type="text" aria-label="gender" class="form-control"/> -->
+                                        <select id="gender" name="gender" class="form-select" aria-label="Gender select">
+                                            <option th:each="gen : ${genders}" th:value="${gen}" th:text="${gen.getOption}" th:selected="${crew.pilot.gender eq gen}" class="text-center"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" id="sandbox-container">
+                                    <div class="input-daterange input-group " id="datepicker">
+                                        <span class="input-group-text col-4" id="addon-wrapping">Дата рождения</span>
+                                        <input name="birthDate" autocomplete="off" type="text" th:value="*{crew.pilot.getBirthdayFormatted}" class="form-control text-center"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" id="sandbox-container">
+                                    <div class="input-group">
+                                        <span class="input-group-text col-4">Марка</span>
+                                        <input name="make" autocomplete="off" type="text" aria-label="make" th:value="*{crew.vehicle.make}" class="form-control text-center"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" id="sandbox-container">
+                                    <div class="input-group">
+                                        <span class="input-group-text col-4">Модель</span>
+                                        <input name="model" autocomplete="off" type="text" aria-label="model" th:value="*{crew.vehicle.model}" class="form-control text-center"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" id="sandbox-container">
+                                    <div class="input-group">
+                                        <span class="input-group-text col-4">Год выпуска</span>
+                                        <input name="year" autocomplete="off" type="text" aria-label="year" th:value="*{crew.vehicle.year}" class="form-control text-center"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" id="sandbox-container">
+                                    <div class="input-group">
+                                        <span class="input-group-text col-4">Мощность</span>
+                                        <input name="hp" autocomplete="off" type="text" aria-label="hp" th:value="*{crew.vehicle.hp}" class="form-control text-center"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" id="sandbox-container">
+                                    <div class="input-group">
+                                        <span class="input-group-text col-4">Зачётный класс</span>
+                                        <!--input name="category" autocomplete="off" type="text" aria-label="category" class="form-control"/> -->
+                                        <select id="category" name="category" class="form-select" aria-label="Category select">
+                                            <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat.getOption}" th:selected="${crew.vehicle.category eq cat}" class="text-center"></option>
+                                
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" id="sandbox-container">
+                                    <div class="input-group">
+                                        <span class="input-group-text col-4">Госномер</span>
+                                        <input name="plateNumber" autocomplete="off" type="text" aria-label="plate" th:value="*{crew.vehicle.plateNumber}" class="form-control text-center"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+
+                                <button type="submit" class="btn btn-success btn-sm">Сохранить</button>
+                                <a th:href="@{/manage}" class="btn btn-outline-dark btn-sm">Отмена</a>
+
+                            </div>
+                        </form>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+        <!-- Bootstrap core JS
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+        -->
+        <script src="//localhost:8080/rally-sprint-events/resources/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="//localhost:8080/rally-sprint-events/resources/js/scripts.js"></script>
+    </body>
+</html>
+

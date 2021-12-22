@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"/>
+                <!-- Page content-->
+                <div class="container-fluid">
+
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/manage}" >Список мероприятий</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/manage-event(eventId=${event.id})}">Мероприятие</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Экипажи</li>
+                        </ol>
+                    </nav>
+
+                    <div>
+                        <br/>
+                    </div>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')" class="row gy-2 gx-3 ">
+                        <div class="col-auto">
+                            <form method="GET" th:action="@{/manage-crew-list}" >
+                                <input type="hidden" name="eventId" th:value="${event.id}" />
+                                <button class="btn btn-outline-dark btn-sm" type="submit">Сортировать по номеру</button>
+                            </form>
+                        </div>
+                        <!--<div class="col-auto">
+                            <form method="POST" th:action="@{/approve-all-crews}" >
+                                <input type="hidden" name="eventId" th:value="${event.id}" />
+                                <button class="btn btn-outline-dark btn-sm" type="submit">Допустить всех</button>
+                            </form>
+                        </div>-->
+
+                    </div>
+
+                    <div>
+                        <br/>
+                    </div>
+
+
+                    <div th:each="category: ${categories}" class="table-responsive">
+
+                        <table class="table table-sm table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <td colspan="11" class="table-dark" ><strong th:text="${category.name}"></strong></td>
+                                </tr>
+                                <tr class="table-dark">
+                                    <th class="text-center align-middle" scope="col">#</th>
+                                    <th class="align-middle" scope="col">Пилот</th>
+                                    <th class="text-center align-middle" scope="col">Возраст</th>
+                                    <th class="align-middle" scope="col">Автомобиль</th>
+                                    <th class="text-center align-middle" scope="col">Мощность</th>
+                                    <th class="text-center align-middle" scope="col">Год выпуска</th>
+                                    <th class="text-center align-middle" scope="col">Класс</th>
+                                    <th class="text-center align-middle" scope="col">Счёт</th>
+                                    <th class="text-center align-middle" scope="col">Оплата</th>
+                                    <th class="text-center align-middle" scope="col">Изм.</th>
+                                    <th class="text-center align-middle" scope="col">Допуск</th>
+                                </tr>
+                            </thead>
+                            <tbody th:if="${crews.size != 0}">
+                                <tr th:each="crew: ${crews}" th:object="${crew}" th:if="${crew.getCategory == category}" th:class="${crew.isApproved == true ? 'table-success' : ''}">
+                                    <th class="text-center align-middle" th:text="*{startNumber}" scope="row" ></th>
+                                    <td class="align-middle" th:text="*{pilot.lastName} + ' ' + *{pilot.firstName}"></td>
+                                    <td class="text-center align-middle" th:text="*{pilot.getAge}"></td>
+                                    <td class="align-middle" th:text="*{vehicle.getMake} + ' ' + *{vehicle.getModel}"></td>
+                                    <td class="text-center align-middle" th:text="*{vehicle.getHp}"></td>
+                                    <td class="text-center align-middle" th:text="*{vehicle.getYear}"></td>
+                                    <td class="text-center align-middle" th:text="*{category.name}"></td>
+                                    <td class="text-center align-middle">
+                                        <form method="POST" th:action="@{/show-invoice}">
+                                            <input type="hidden" name="crewId" th:value="*{id}"/>
+
+                                            <button type="submit" class="btn btn-outline-dark btn-sm">Ok</button>
+                                        </form> 
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        <div th:if="*{isPaid} == true">
+                                            <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" th:data-bs-target="*{'#unpayCrewModal-' + id}">Есть</button>
+                                            <!-- UNPAY CREW Modal -->
+                                            <div class="modal fade" th:id="*{'unpayCrewModal-' + id}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <!-- Modal Header -->
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Подтвердите действие</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            Уверены, что хотите отменить оплату участника?
+                                                        </div>
+
+                                                        <!-- Modal footer -->
+                                                        <div class="modal-footer">
+                                                            <form method="POST" th:action="@{/cancel-payment}">
+                                                                <input type="hidden" name="crewId" th:value="*{id}" />
+                                                                <input type="hidden" name="eventId" th:value="${event.id}" />
+                                                                <input type="hidden" name="url" value="manage-crew-list-sort-by-cat" />
+                                                                <button type="submit" name="submit" value="value" class="btn btn-outline-danger btn-sm" data-dismiss="modal">Ok</button>
+                                                                <button type="button" class="btn btn-outline-dark btn-sm" data-bs-dismiss="modal">Отмена</button>
+                                                            </form> 
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div th:if="*{isPaid} != true">
+                                            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" th:data-bs-target="*{'#payCrewModal-' + id}">Нет</button>
+                                            <!-- PAY CREW Modal -->
+                                            <div class="modal fade" th:id="*{'payCrewModal-' + id}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <!-- Modal Header -->
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Подтвердите действие</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Подтверждаете оплату взносов участником?
+                                                        </div>
+                                                        <!-- Modal footer -->
+                                                        <div class="modal-footer">
+                                                            <form method="POST" th:action="@{/confirm-payment}">
+                                                                <input type="hidden" name="crewId" th:value="*{id}" />
+                                                                <input type="hidden" name="eventId" th:value="${event.id}"/>
+                                                                <input type="hidden" name="url" value="manage-crew-list-sort-by-cat" />
+                                                                <button type="submit" class="btn btn-outline-success btn-sm" data-dismiss="modal">Ok</button>
+                                                                <button type="button" class="btn btn-outline-dark btn-sm" data-bs-dismiss="modal">Отмена</button>
+                                                            </form> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="text-center align-middle">
+                                        <div>
+                                            <button type="button" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" th:data-bs-target="*{'#editCrewModal-' + id}">...</button>
+                                            <!-- EDIT CREW Modal -->
+                                            <div class="modal fade" th:id="*{'editCrewModal-' + id}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <!-- Modal Header -->
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Коррекция данных</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <form method="POST" th:action="@{/crew-correcting}">
+                                                            <input type="hidden" name="crewId" th:value="*{id}" />
+                                                            <input type="hidden" name="eventId" th:value="${event.id}"/>
+                                                            <input type="hidden" name="url" value="manage-crew-list-sort-by-cat" />
+                                                            <div class="modal-body">
+                                                                <div>Внесите необходимые изменения:</div>
+                                                                <br/>
+                                                                <div>
+                                                                    <div class="row">
+                                                                        <div class="col-12" id="sandbox-container">
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-text col-4">Стартовый номер</span>
+                                                                                <input th:value="*{startNumber}" name="startNumber" autocomplete="off" type="text" class="form-control text-center"/>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-12" id="sandbox-container">
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-text col-4">Класс</span>
+                                                                                <select name="categoryId" class="form-select" aria-label="Category select">
+                                                                                    <option selected="" th:value="*{category.id}" th:text="*{category.name}" class="text-center text-primary"></option>
+                                                                                    <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}" class="text-center"></option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <!-- Modal footer -->
+                                                            <div class="modal-footer">
+                                                                <button type="submit" class="btn btn-outline-success btn-sm" data-dismiss="modal">Сохранить</button>
+                                                                <button type="button" class="btn btn-outline-dark btn-sm" data-bs-dismiss="modal">Отмена</button>
+                                                            </div>
+                                                        </form> 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                    </td>
+
+                                    <td class="text-center align-middle">
+                                        <div th:if="*{isApproved} == true">
+                                            <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" th:data-bs-target="*{'#disApproveCrewModal-' + id}">Есть</button>
+                                            <!-- NOT APPROVED CREW Modal -->
+                                            <div class="modal fade" th:id="*{'disApproveCrewModal-' + id}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <!-- Modal Header -->
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Подтвердите действие</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            Уверены, что хотите отозвать допуск участника?
+                                                        </div>
+
+                                                        <!-- Modal footer -->
+                                                        <div class="modal-footer">
+                                                            <form method="POST" th:action="@{/cancel-approve}">
+                                                                <input type="hidden" name="crewId" th:value="*{id}" />
+                                                                <input type="hidden" name="eventId" th:value="${event.id}" />
+                                                                <input type="hidden" name="url" value="manage-crew-list-sort-by-cat" />
+                                                                <button type="submit" name="submit" value="value" class="btn btn-outline-danger btn-sm" data-dismiss="modal">Ok</button>
+                                                                <button type="button" class="btn btn-outline-dark btn-sm" data-bs-dismiss="modal">Отмена</button>
+                                                            </form> 
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div th:if="*{isApproved} != true">
+                                            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" th:data-bs-target="*{'#approveCrewModal-' + id}">Нет</button>
+                                            <!-- PAY CREW Modal -->
+                                            <div class="modal fade" th:id="*{'approveCrewModal-' + id}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <!-- Modal Header -->
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Подтвердите действие</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Подтверждаете допуск участника к заездам?
+                                                        </div>
+                                                        <!-- Modal footer -->
+                                                        <div class="modal-footer">
+                                                            <form method="POST" th:action="@{/confirm-approve}">
+                                                                <input type="hidden" name="crewId" th:value="*{id}" />
+                                                                <input type="hidden" name="eventId" th:value="${event.id}"/>
+                                                                <input type="hidden" name="url" value="manage-crew-list-sort-by-cat" />
+                                                                <button type="submit" class="btn btn-outline-success btn-sm" data-dismiss="modal">Ok</button>
+                                                                <button type="button" class="btn btn-outline-dark btn-sm" data-bs-dismiss="modal">Отмена</button>
+                                                            </form> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                        <hr/>
+                        <div>
+                            <br/>
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <br/>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+    </body>
+</html>

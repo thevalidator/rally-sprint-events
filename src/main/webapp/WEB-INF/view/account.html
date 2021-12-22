@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"/>
+                <!-- Page content-->
+                <div class="container-fluid">
+
+                    <br/>
+
+                    <div >
+
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <div class="account-settings">
+                                                <div class="user-profile justify-content-center">
+
+                                                    <div class="user-avatar">
+                                                        <img class="rounded mx-auto d-block" th:src="@{resources/png/pilot.png}" width="100px" height="auto" alt="avatar"/>
+                                                    </div>
+
+                                                </div>
+                                                <div class="about">
+                                                    <h5 th:text="${user.username}" class="user-name text-center"></h5>
+                                                </div>
+                                                <br/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <!--
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <h6 class="mb-2 text-primary">Данные аккаунта</h6>
+                                                </div>
+                                                -->
+                                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                                                    <dl class="form-group">
+                                                        <dt>Фамилия:</dt>
+                                                        <dd th:text="${pilot.lastName}"></dd>
+                                                    </dl>
+                                                </div>
+                                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                                                    <dl class="form-group">
+                                                        <dt>Имя:</dt>
+                                                        <dd th:text="${pilot.firstName}"></dd>
+                                                    </dl>
+                                                </div>
+                                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                                                    <dl class="form-group">
+                                                        <dt>Дата рождения:</dt>
+                                                        <dd th:text="${pilot.birthday}"></dd>
+                                                    </dl>
+                                                </div>
+                                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                                                    <dl class="form-group">
+                                                        <dt>Пол:</dt>
+                                                        <dd th:text="${pilot.gender.getOption}"></dd>
+                                                    </dl>
+                                                </div>
+                                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                                                    <dl class="form-group">
+                                                        <dt>Email:</dt>
+                                                        <dd th:text="${user.email}"></dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
+                                            <br/>
+                                            <div class="row">
+                                                <div class="col-auto">
+                                                    <a th:href="@{/change-password}" class="btn btn-outline-dark btn-sm">Сменить пароль</a>
+                                                    
+                                                </div>
+                                                <div class="col-auto">
+                                                    <form method="POST" th:action="@{/accountedit}">
+                                                        <input name="pilotId" type="hidden" th:value="${pilot.id}"/>
+                                                        <button type="submit" class="btn btn-outline-dark btn-sm">Редактировать</button> 
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>      
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div th:replace="fragments.html :: copyright"></div>
+
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+    </body>
+</html>

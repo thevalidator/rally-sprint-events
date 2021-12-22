@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"/>
+                <!-- Page content-->
+                <div class="container-fluid">
+
+                    <div>
+                        <br/>
+                    </div>
+                    <!-- Modal -->
+                    <div >
+                        <article th:if="${tracks.size == 0}" class="blog-post">
+                            <h3 class="blog-post-title">В БАЗЕ ОТСУТСТВУЮТ ТРЕКИ, ДЛЯ СОЗДАНИЯ МЕРОПРИЯТИЯ НЕОБХОДИМ ХОТЯ БЫ ОДИН ТРЕК</h3>
+                        </article>
+                        <div th:if="${tracks.size != 0}" >
+                            <div class="container-fluid">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticEventBackdropLabel">Новое мероприятие</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="POST" th:action="@{/event-save}">
+                                        <input name="eventId" type="hidden" th:value="${eventId}"/>
+                                        <div class="row">
+                                            <div class="col-12" id="sandbox-container">
+                                                <div class="input-daterange input-group" id="datepicker">
+                                                    <span class="input-group-text  col-4" id="addon-wrapping">Дата</span>
+                                                    <input name="date" autocomplete="off" type="text" class="form-control" th:value="${dto.date}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12" id="sandbox-container">
+                                                <div class="input-group">
+                                                    <span class="input-group-text  col-4">Название</span>
+                                                    <input name="name" autocomplete="off" type="text" aria-label="Event name" class="form-control text-center" th:value="${dto.name}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12" id="sandbox-container">
+                                                <div class="input-group">
+                                                    <span class="input-group-text  col-4">ССылка на регламент</span>
+                                                    <input name="rulesLink" autocomplete="off" type="text" aria-label="Rules link" class="form-control text-center"  th:value="${dto.rulesLink}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12" id="sandbox-container">
+                                                <div class="input-group">
+                                                    <span class="input-group-text col-4">Категории</span>
+                                                    <select id="track" name="catSetId" class="form-select" aria-label="CatSet select">
+                                                        <option selected="" th:text="${catSet.name}" th:value="${catSet.id}" class="text-center text-primary"></option>
+                                                        <option th:each="cs : ${catSets}" th:value="${cs.id}" th:text="${cs.name}"  class="text-center"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12" id="sandbox-container">
+                                                <div class="input-group">
+                                                    <span class="input-group-text col-4">Трек</span>
+                                                    <select id="track" name="trackId" class="form-select" aria-label="Track select">
+                                                        <option selected="" th:text="${track.trackName}" th:value="${track.id}" class="text-center text-primary"></option>
+                                                        <option th:each="t : ${tracks}" th:value="${t.id}" th:text="${t.trackName}"  class="text-center"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--<div class="row">
+                                            <div class="col-12" id="sandbox-container">
+                                                <div class="input-group">
+                                                    <span class="input-group-text  col-4">Кол-во СУ</span>
+                                                    <input name="specialSectorAmount" autocomplete="off" type="text" aria-label="Special sector" class="form-control text-center"  th:value="${dto.specialSectorAmount}"/>
+                                                </div>
+                                            </div>
+                                        </div>-->
+                                        <div class="row">
+                                            <div class="col-12" id="sandbox-container">
+                                                <div class="input-group">
+                                                    <span class="input-group-text  col-4">Кол-во конфигураций</span>
+                                                    <input name="configAmount" autocomplete="off" type="text" aria-label="Configuration" class="form-control text-center" th:value="${dto.configAmount}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12" id="sandbox-container">
+                                                <div class="input-group">
+                                                    <span class="input-group-text  col-4">Макс. экипажей</span>
+                                                    <input name="maxCrew" autocomplete="off" type="text" aria-label="Max crew" class="form-control text-center"  th:value="${dto.maxCrew}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success btn-sm" data-bs-dismiss="modal">Создать</button>
+                                            <a th:href="@{/manage-event(eventId=${eventId})}" class="btn btn-outline-dark btn-sm">Отмена</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div>
+                        <br/>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+
+        <script th:replace="fragments.html :: jquery" />
+        <script th:replace="fragments.html :: datepicker" />
+        <script th:replace="fragments.html :: datepickerRU" />
+        <script th:replace="fragments.html :: datepicker-format" />
+        <script type="text/javascript">
+            $(window).on('load', function () {
+                $('#eventResult').modal('show');
+            });
+        </script>
+    </body>
+</html>

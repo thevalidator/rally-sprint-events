@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"/>
+                <!-- Page content-->
+                <div class="container-fluid">
+                    <div th:if="${result != null}">
+                        <!-- Result of adding new event -->
+                        <div class="modal fade" id="eventResult" tabindex="-1">
+                            <div class="modal-dialog modal-sm modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header alert-success modal-sm text-center">
+                                        <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body" th:text="${result}"></div>
+                                    <div class="modal-footer modal-sm">
+                                        <button type="button" class="btn btn-outline-dark btn-sm" data-bs-dismiss="modal">Закрыть</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <br/>
+                    </div>
+
+                    <!-- Button add event -->
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/event-new}" class="btn btn-outline-dark btn-sm">Создать мероприятие</a>
+
+                    <div>
+                        <br/>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Мероприятие</th>
+                                    <th class="text-center" scope="col">Дата</th>
+
+                                    
+                                    <th sec:authorize="hasRole('ROLE_USER')" class="text-center" scope="col"></th>
+                                    <th class="text-center" scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="event,iter: ${events}">
+                                    <th class="align-middle" th:text="${iter.count}" scope="row"></th>
+                                    <td class="align-middle" th:text="${event.eventName}"></td>
+                                    <td class="text-center align-middle" th:text="${event.eventDate}"></td>
+                                    <td class="text-center align-middle" sec:authorize="hasRole('ROLE_USER')">
+                                        <!--<form class="text-center" method="GET" th:action="@{/show-event-practice}">
+                                            <input type="hidden" name="eventId" th:value="*{event.id}" />
+                                            <button type="submit" class="btn btn-outline-dark btn-sm">Практика</button>
+                                        </form> 
+                                        -->
+                                        <!-- 
+                                        <a th:href="@{/event/{eventId}(eventId = ${event.id})}" class="btn btn-outline-dark btn-sm">Результаты</a>
+                                        -->
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        <form class="text-center" method="GET" th:action="@{/show-event-results}">
+                                            <input type="hidden" name="eventId" th:value="*{event.id}" />
+                                            <button type="submit" class="btn btn-outline-dark btn-sm">Результаты</button>
+                                        </form> 
+                                        <!-- 
+                                        <a th:href="@{/event/{eventId}(eventId = ${event.id})}" class="btn btn-outline-dark btn-sm">Результаты</a>
+                                        -->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+
+        <script th:replace="fragments.html :: jquery" />
+        <script th:replace="fragments.html :: datepicker" />
+        <script th:replace="fragments.html :: datepickerRU" />
+        <script th:replace="fragments.html :: datepicker-format" />
+        <script type="text/javascript">
+            $(window).on('load', function () {
+                $('#eventResult').modal('show');
+            });
+        </script>
+    </body>
+</html>

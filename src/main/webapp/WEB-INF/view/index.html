@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <div class="sidebar-heading border-bottom bg-light">
+                    <!-- Top navigation-->
+                    <nav th:replace="fragments.html :: topnavigation"/>
+                </div>
+                <!-- Page content-->
+                <div class="container-fluid">
+                    <section class="py-5">
+                        <div class="container my-5">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-12">
+                                    <p class="lead">Гонки на любых авто для всех и каждого с любым опытом! Хочешь научиться у крутых гонщиков управлять своим авто в экстремальных ситуациях? Тогда тебе к нам!</p>
+                                    <p class="lead">Идеальный формат для новичков. Опытным спортсменам тоже скучать не придется, т.к. борьба обещает быть плотной.</p>
+                                    <p class="lead">Опытный тренерский состав индивидуально найдёт подход к каждому и поможет безопасно развить в каждом настоящего пилота! Записывайтесь на программу обучения или спортивные заезды.</p>
+                                    <p class="lead">По вопросам аренды автомобилей пишите в телеграм.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+    </body>
+</html>

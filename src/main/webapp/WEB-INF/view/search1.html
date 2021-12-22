@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Rally Sprint Events</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="//localhost:8080/rally-sprint-events/resources/assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="resources/css/styles.css" rel="stylesheet" />
+        <link rel="stylesheet" href="resources/css/bootstrap-datepicker3.min.css"/>
+
+    </head>
+    <body>
+        <div class="d-flex" id="wrapper">
+
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"> </div>
+            <!-- Page content wrapper-->
+            <div  id="page-content-wrapper">
+
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"></nav>
+                <!-- Page content-->
+                <div class="container-fluid">
+
+
+
+                    <h1 class="mt-4">Simple Sidebar</h1>
+                    <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
+                    <p>
+                        Make sure to keep all page content within the
+                        <code>#page-content-wrapper</code>
+                        . The top navbar is optional, and just for demonstration. Just create an element with the
+                        <code>#sidebarToggle</code>
+                        ID which will toggle the menu when clicked.
+                    </p>
+
+                    <!-- Search FROM  TO -->
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12" id="sandbox-container">
+                                <div class="input-daterange input-group pt-5" id="datepicker">
+                                    <span class="input-group-text" id="addon-wrapping">с</span>
+                                    <input type="text" class="input-sm form-control" name="start" />
+                                    <span class="input-group-text">по</span>
+                                    <input type="text" class="input-sm form-control" name="end" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+        <!-- Bootstrap core JS-->
+        <script src="resources/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="resources/js/scripts.js"></script>
+
+        <script src="resources/js/jquery.min.js"></script>
+        <script src="resources/js/bootstrap-datepicker.min.js"></script>
+        <script src="resources/js/bootstrap-datepicker.ru.min.js"></script>
+        <script>
+            $('#sandbox-container .input-daterange').datepicker({
+                format: "dd-mm-yyyy",
+                language: "ru",
+                autoclose: true,
+                todayHighlight: true
+            });
+        </script>
+
+
+    </body>
+</html>
+

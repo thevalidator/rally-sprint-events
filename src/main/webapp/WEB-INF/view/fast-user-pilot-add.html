@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"/>
+                <!-- Page content-->
+                <div class="container-fluid">
+                    <br/>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" th:data-bs-target="${'#addLapsModal-' + stageId}">Загрузить юзеров</button>
+                        <!-- ADD LAPS Modal -->
+                        <div class="modal fade" th:id="${'addLapsModal-' + stageId}">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Добавление юзеров</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form method="POST" th:action="@{/fast-user-pilot-add}" enctype="multipart/form-data">
+
+                                        <div class="modal-body">
+                                            
+                                            <div class="input-group mb-3">
+                                                <input type="file" name="file" accept=".txt" class="form-control" id="inputGroupFile"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+
+                                            <button type="submit" name="submit" class="btn btn-outline-success btn-sm" data-dismiss="modal">Загрузить</button>
+                                            <button type="button" class="btn btn-outline-dark btn-sm" data-bs-dismiss="modal">Отмена</button>
+
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+    </body>
+</html>

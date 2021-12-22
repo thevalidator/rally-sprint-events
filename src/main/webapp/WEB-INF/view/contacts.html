@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"/>
+                <!-- Page content-->
+                <div class="container-fluid">
+
+                    
+                    <br/>
+                    <div class="card text-dark bg-light mb-3" >
+                        <div class="card-header"><strong>Контакты:</strong></div>
+                        <div class="card-body">
+                            <ul>
+                                <li><img class=" mx-auto" th:src="@{resources/png/email.png}" width="20px" height="auto" alt="avatar"/> info@rally-sprint.events</li>
+                                <li><img class=" mx-auto" th:src="@{resources/png/instagram.png}" width="20px" height="auto" alt="avatar"/>
+                                    <a href="https://instagram.com/rally_sprint.events" class="card-link">@rally_sprint.events</a>
+                                </li>
+                                <li><img class=" mx-auto" th:src="@{resources/png/telegram.png}" width="20px" height="auto" alt="avatar"/>
+                                    <a href="https://t.me/RS_events" class="card-link">@RS_events</a> - организационные вопросы 
+                                </li>
+                                <li><img class=" mx-auto" th:src="@{resources/png/telegram.png}" width="20px" height="auto" alt="avatar"/>
+                                    <a href="https://t.me/illusion_zx" class="card-link">@illusion_zx</a> - вопросы по работе сайта
+                                </li>
+                            </ul>
+                            
+                        </div>
+                    </div>
+                    <br/>
+                    
+
+
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+    </body>
+</html>

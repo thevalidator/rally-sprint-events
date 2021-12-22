@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"/>
+                <!-- Page content-->
+                <div class="container-fluid">
+
+                    <div >
+                        <br/>
+                        <div class="d-flex justify-content-center">
+                            <h5 class="text-center">Редактировать данные автомобиля</h5>
+                        </div>
+                        <br/>
+                        <div class="justify-content-center">
+                            <form method="POST" th:action="@{/vehicle/edit}" class="needs-validation" novalidate>
+                                <input name="vehicleId" type="hidden" th:value="${vehicle.id}"/>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="input-group">
+                                            <span class="input-group-text col-4">Марка</span>
+                                            <input th:value="${vehicle.make}" name="make" autocomplete="off" type="text" aria-label="make" class="form-control" required pattern="^[A-ZА-Я]{1}[a-zа-я]{0,19}"/>
+                                            <div class="invalid-feedback">
+                                                Первая буква заглавная, далее прописные. Макс 20 символов.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="input-group">
+                                            <span class="input-group-text col-4">Модель</span>
+                                            <input th:value="${vehicle.model}" name="model" autocomplete="off" type="text" aria-label="model" class="form-control" required pattern="^[A-ZА-Я0-9]{1}[a-zа-я0-9 ]{0,19}"/>
+                                            <div class="invalid-feedback">
+                                                Первая буква заглавная, далее прописные. Макс 20 символов.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="input-group">
+                                            <span class="input-group-text col-4">Год выпуска</span>
+                                            <input th:value="${vehicle.year}" name="year" autocomplete="off" type="text" aria-label="year" class="form-control"  required pattern="^[12]{1}[0-9]{3}"/>
+                                            <div class="invalid-feedback">
+                                                Год цифрами полностью (пример: 1993)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="input-group">
+                                            <span class="input-group-text col-4">Мощность</span>
+                                            <input th:value="${vehicle.hp}" name="hp" autocomplete="off" type="text" aria-label="hp" class="form-control"  required pattern="[0-9]{2,4}"/>
+                                            <div class="invalid-feedback">
+                                                Только цифры.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="input-group">
+                                            <span class="input-group-text col-4">Вес</span>
+                                            <input th:value="${vehicle.weight}" name="weight" autocomplete="off" type="text" aria-label="weight" class="form-control"  required pattern="[0-9]{2,4}"/>
+                                            <div class="invalid-feedback">
+                                                Только цифры.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="input-group">
+                                            <span class="input-group-text col-4">Госномер</span>
+                                            <input th:value="${vehicle.plateNumber}" name="plateNumber" autocomplete="off" type="text" aria-label="plate" class="form-control"  required pattern="[A-zА-я0-9]{1,13}"/>
+                                            <div class="invalid-feedback">
+                                                Максимум 13 символов.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success btn-sm">Сохранить</button>
+                                    <a th:href="@{/vehicles}" class="btn btn-outline-dark btn-sm">Отмена</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+
+        <script>
+            (function () {
+                'use strict'
+
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.querySelectorAll('.needs-validation')
+
+                // Loop over them and prevent submission
+                Array.prototype.slice.call(forms)
+                        .forEach(function (form) {
+                            form.addEventListener('submit', function (event) {
+                                if (!form.checkValidity()) {
+                                    event.preventDefault()
+                                    event.stopPropagation()
+                                }
+
+                                form.classList.add('was-validated')
+                            }, false)
+                        })
+            })()
+        </script>
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+    </body>
+</html>

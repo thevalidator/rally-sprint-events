@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"/>
+                <!-- Page content-->
+                <div class="container-fluid">
+
+                    <div>
+                        <br/>
+                    </div>
+
+                    <!-- Button trigger modal -->
+                    <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#staticServiceBackdrop">
+                        Новая услуга
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="staticServiceBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticServiceBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticServiceBackdropLabel">Добавить услугу</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="POST" th:action="@{/service-create}">
+                                        <div class="row">
+                                            <div class="col-12" id="sandbox-container">
+                                                <div class="input-group">
+                                                    <span class="input-group-text  col-3">Название</span>
+                                                    <input name="serviceName" autocomplete="off" type="text" aria-label="Service name" class="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12" id="sandbox-container">
+                                                <div class="input-group">
+                                                    <span class="input-group-text  col-3">Цена (руб)</span>
+                                                    <input name="servicePrice" autocomplete="off" type="text" aria-label="Service price" class="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success btn-sm" data-bs-dismiss="modal">Создать</button>
+                                            <button type="button" class="btn btn-outline-dark btn-sm" data-bs-dismiss="modal">Отмена</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <br/>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Наименование</th>
+                                    <th class="text-center" scope="col">Цена (руб)</th>
+                                    <th class="text-center" scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="service,iter: ${services}">
+                                    <th class="align-middle" th:text="${iter.count}" scope="row"></th>
+                                    <td class="align-middle" th:text="${service.serviceName}"></td>
+                                    <td class="align-middle text-center" th:text="${service.servicePrice}"></td>
+                                    <td class="align-middle" sec:authorize="hasRole('ROLE_ADMIN')">
+                                        <form class="text-center" method="POST" th:action="@{/service-deactivate}">
+                                            <input type="hidden" name="serviceId" th:value="*{service.id}" />
+                                            <button type="submit" name="submit" value="value" class="btn btn-outline-danger btn-sm">Удалить</button>
+                                        </form> 
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+    </body>
+</html>
