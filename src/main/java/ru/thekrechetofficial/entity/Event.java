@@ -76,6 +76,15 @@ public class Event implements Comparable<Event>, Serializable {
     
     @Column(name = "is_deleted")
     private boolean isDeleted;
+    
+    @Column(name = "reg_link")
+    private String regLink;
+    
+    @Column(name = "description")
+    private String description;
+    
+    @Column(name = "res_link")
+    private String resLink;
 
     public long getId() {
         return id;
@@ -200,6 +209,32 @@ public class Event implements Comparable<Event>, Serializable {
     public String getFormattedEventDate() {
       return (DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).localizedBy(new Locale("ru")).format(getEventDate()));
     }
+
+    public String getRegLink() {
+        return regLink;
+    }
+
+    public void setRegLink(String regLink) {
+        this.regLink = regLink;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getResLink() {
+        return resLink;
+    }
+
+    public void setResLink(String resLink) {
+        this.resLink = resLink;
+    }
+    
+    
 
     @Override
     public int compareTo(Event e) {

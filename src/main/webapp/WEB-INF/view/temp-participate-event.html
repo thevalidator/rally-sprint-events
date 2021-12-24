@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:include="fragments.html :: header">
+        <title id="pageTitle">Rally Sprint Events</title>
+    </head>
+
+    <body>
+        <div th:replace="fragments.html :: toppic"></div>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div th:replace="fragments.html :: sidebar"/>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav th:replace="fragments.html :: topnavigation"/>
+                <!-- Page content-->
+                <div class="container-fluid">
+
+                    <div>
+                        <br/>
+                    </div>
+
+                    <div>
+                        <article class="blog-post">
+                            <h2 th:text="${event.eventName}" class="blog-post-title"></h2>
+                            <hr/>
+                            <div>
+                                <ul class="list-unstyled mt-3 mb-4">
+                                    <li th:text="${event.getTrack.getTrackName}"></li>
+                                    <li th:text="${event.getFormattedEventDate}"></li>
+                                </ul>
+                            </div>
+                            <hr/>
+                        </article>
+                    </div>
+
+
+
+
+
+
+                    <div class="row gy-2 gx-3 ">
+                        <div class="col-auto">
+                            <a class="btn btn-outline-dark btn-sm" th:href="${event.regLink}" role="button">Зарегистрироваться</a>
+                        </div>
+
+                        <div class="col-auto">
+                            <a class="btn btn-outline-dark btn-sm" th:href="${event.rulesLink}" role="button">Регламент</a>
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <br/>
+                    </div>
+
+                    <div>
+                        <section class="py-5">
+                            <div class="container my-5">
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-12">
+                                        <p th:text="${event.description}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                    </div>
+
+                    <div>
+                        <br/>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html :: copyright"></div>
+
+        <!-- Bootstrap core JS-->
+        <script th:replace="fragments.html :: BCJS" />
+        <!-- Core theme JS-->
+        <script th:replace="fragments.html :: TJS" />
+    </body>
+</html>

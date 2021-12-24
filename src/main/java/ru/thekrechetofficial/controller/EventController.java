@@ -193,6 +193,12 @@ public class EventController {
     @GetMapping("/show-event-results")
     public String showEventResults(ModelMap model,
             @RequestParam(value = "eventId") Long eventId) {
+        Event e = eventService.getEventById(eventId);
+        if (e.getResLink() != null) {
+            
+            return "redirect:/" + e.getResLink();
+        }
+        
         int ssAmount = eventRepository.findById(eventId).orElseThrow().getSpecialSectorAmount();
 
         List<GeneralResultWithSSDto> results = eventService.getCategorySortedResultWithSS(eventId);
@@ -496,7 +502,7 @@ public class EventController {
     public String deactivateEvent(@RequestParam(value = "eventId") Long eventId) {
         eventService.setIsManaged(false, eventId);
         eventService.setHasRegistration(false, eventId);
-        return "redirect:/allevents";
+        return "redirect:/manage";
     }
 
     @PostMapping("/activate-event")

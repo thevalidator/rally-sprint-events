@@ -143,6 +143,12 @@ public class CrewController {
     @GetMapping("/participate-event")
     public String registrationEventPage(ModelMap model,
             @RequestParam(value = "eventId") Long eventId) {
+        
+        Event e = eventService.getEventWithTrackById(eventId);
+        if (e.getRegLink() != null) {
+            model.put("event", e);
+            return "temp-participate-event";
+        }
 
         fillRegEventPage(model, eventId);
 

@@ -39,7 +39,7 @@
                                     <th class="text-center align-middle" scope="col">Трек</th>
                                     <th class="text-center align-middle" scope="col">Макс. участников</th>
                                     <th class="text-center align-middle" scope="col">Дата</th>
-                                    <th scope="col"></th>
+                                    
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
@@ -54,16 +54,12 @@
                                     <td class="align-middle" th:text="${event.track.trackName}"></td>
                                     <td class="text-center align-middle" th:text="${event.maxCrew}"></td>
                                     <td class="text-center align-middle" th:text="${event.getFormattedEventDate}"></td>
-                                    <td class="text-center align-middle">
-                                        <div class="col-auto">
-                                            <a class="btn btn-outline-dark btn-sm" th:href="${event.rulesLink}" role="button">Регламент</a>
-                                        </div>
-                                    </td>
+                                    
 
                                     <td class="text-center align-middle" >
                                         <form method="GET" th:action="@{/participate-event}">
                                             <input type="hidden" name="eventId" th:value="${event.id}" />
-                                            <button type="submit" name="submit" value="value" class="btn btn-outline-dark btn-sm">Регистрация</button>
+                                            <button type="submit" name="submit" value="value" class="btn btn-outline-dark btn-sm">Подробнее</button>
                                         </form> 
                                     </td>
                                 </tr>
